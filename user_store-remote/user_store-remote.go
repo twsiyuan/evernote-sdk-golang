@@ -12,14 +12,10 @@ import (
         "os"
         "strconv"
         "strings"
-        "github.com/apache/thrift/lib/go/thrift"
-	"github.com/twsiyuan/evernote-sdk-golang/types"
-	"github.com/twsiyuan/evernote-sdk-golang/errors"
-        "github.com/twsiyuan/evernote-sdk-golang/userstore"
+        "git.apache.org/thrift.git/lib/go/thrift"
+        "github.com/twsiyuan/evernote-sdk-golang/edam"
 )
 
-var _ = types.GoUnusedProtection__
-var _ = errors.GoUnusedProtection__
 
 func Usage() {
   fmt.Fprintln(os.Stderr, "Usage of ", os.Args[0], " [-h host:port] [-u url] [-f[ramed]] function [arg1 [arg2...]]:")
@@ -127,7 +123,7 @@ func main() {
     Usage()
     os.Exit(1)
   }
-  client := userstore.NewUserStoreClientFactory(trans, protocolFactory)
+  client := edam.NewUserStoreClientFactory(trans, protocolFactory)
   if err := trans.Open(); err != nil {
     fmt.Fprintln(os.Stderr, "Error opening socket to ", host, ":", port, " ", err)
     os.Exit(1)
@@ -326,7 +322,7 @@ func main() {
       Usage()
      return
     }
-    argvalue0 := types.ServiceLevel(tmp0)
+    argvalue0 := edam.ServiceLevel(tmp0)
     value0 := argvalue0
     fmt.Print(client.GetAccountLimits(value0))
     fmt.Print("\n")

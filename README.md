@@ -18,5 +18,5 @@ This project was simple code generated from [Evernote-thrift](https://github.com
 
 # Example
 
-see [utils/utils_test.go](/utils/utils_test.go) and [utils/oauth_test.go](/utils/oauth_test.go)
+see [example/](/example/)
 

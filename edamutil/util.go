@@ -1,11 +1,10 @@
-package utils
+package edamutil
 
 import (
 	"fmt"
 
-	"github.com/apache/thrift/lib/go/thrift"
-	"github.com/twsiyuan/evernote-sdk-golang/notestore"
-	"github.com/twsiyuan/evernote-sdk-golang/userstore"
+	"git.apache.org/thrift.git/lib/go/thrift"
+	"github.com/twsiyuan/evernote-sdk-golang/edam"
 )
 
 type EnvironmentType int
@@ -15,7 +14,7 @@ const (
 	PRODUCTION
 )
 
-func GetHost(envType EnvironmentType) string {
+func Host(envType EnvironmentType) string {
 	host := "www.evernote.com"
 	if envType == SANDBOX {
 		host = "sandbox.evernote.com"
@@ -23,19 +22,19 @@ func GetHost(envType EnvironmentType) string {
 	return host
 }
 
-func GetUserStore(envType EnvironmentType) (*userstore.UserStoreClient, error) {
-	url := fmt.Sprintf("https://%s/edam/user", GetHost(envType))
+func NewUserStore(envType EnvironmentType) (*edam.UserStoreClient, error) {
+	url := fmt.Sprintf("https://%s/edam/user", Host(envType))
 	c, err := thrift.NewTHttpPostClient(url)
 	if err != nil {
 		return nil, err
 	}
-	return userstore.NewUserStoreClientFactory(
+	return edam.NewUserStoreClientFactory(
 		c,
 		thrift.NewTBinaryProtocolFactoryDefault(),
 	), nil
 }
 
-func GetNoteStore(userstore *userstore.UserStoreClient, authenticationToken string) (*notestore.NoteStoreClient, error) {
+func NewNoteStore(userstore *edam.UserStoreClient, authenticationToken string) (*edam.NoteStoreClient, error) {
 	urls, err := userstore.GetUserUrls(authenticationToken)
 	if err != nil {
 		return nil, err
@@ -47,7 +46,7 @@ func GetNoteStore(userstore *userstore.UserStoreClient, authenticationToken stri
 		return nil, err
 	}
 
-	return notestore.NewNoteStoreClientFactory(
+	return edam.NewNoteStoreClientFactory(
 		c,
 		thrift.NewTBinaryProtocolFactoryDefault(),
 	), nil
