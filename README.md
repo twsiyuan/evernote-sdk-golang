@@ -11,9 +11,9 @@ This project was simple code generated from [Evernote-thrift](https://github.com
 
     ```thrift -strict -nowarn --allow-64bit-consts --allow-neg-keys --gen go:package_prefix=github.com/your-github-id/evernote-sdk-golang/ evernote-thrift/src/UserStore.thrift```
 
-* Modify import package path from 'git.apache.org/thrift.git/lib/go/thrift' to 'github.com/apache/thrift/lib/go/thrift'
+* Modify import package path from 'github.com/apache/thrift/lib/go/thrift' to 'github.com/apache/thrift/lib/go/thrift'
 * Install thrift golang package from github: ```go get github.com/apache/thrift/lib/go/thrift```
-* Fix some compiler errors...(had some errors using thrift 0.10.0 generator)
+* Fix some compiler errors...(had some errors using thrift 0.13.0 generator)
 * Enjoy!
 
 # Example

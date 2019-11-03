@@ -1,9 +1,10 @@
 package edamutil
 
 import (
+	"context"
 	"fmt"
 
-	"git.apache.org/thrift.git/lib/go/thrift"
+	"github.com/apache/thrift/lib/go/thrift"
 	"github.com/twsiyuan/evernote-sdk-golang/edam"
 )
 
@@ -34,8 +35,8 @@ func NewUserStore(envType EnvironmentType) (*edam.UserStoreClient, error) {
 	), nil
 }
 
-func NewNoteStore(userstore *edam.UserStoreClient, authenticationToken string) (*edam.NoteStoreClient, error) {
-	urls, err := userstore.GetUserUrls(authenticationToken)
+func NewNoteStore(ctx context.Context, userstore *edam.UserStoreClient, authenticationToken string) (*edam.NoteStoreClient, error) {
+	urls, err := userstore.GetUserUrls(ctx, authenticationToken)
 	if err != nil {
 		return nil, err
 	}
