@@ -4,11 +4,12 @@ import (
 	"context"
 	"encoding/gob"
 	"fmt"
+	"net/http"
+
 	gcontext "github.com/gorilla/context"
 	"github.com/gorilla/sessions"
 	"github.com/mrjones/oauth"
 	"github.com/twsiyuan/evernote-sdk-golang/edamutil"
-	"net/http"
 )
 
 const (
@@ -120,16 +121,16 @@ func main() {
 		}
 
 		evernoteauthorizedToken := authorizedToken
-		ns, err := edamutil.NewNoteStore(us, evernoteauthorizedToken)
+		ns, err := edamutil.NewNoteStore(req.Context(), us, evernoteauthorizedToken)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		notebook, _ := ns.GetDefaultNotebook(evernoteauthorizedToken)
+		notebook, _ := ns.GetDefaultNotebook(req.Context(), evernoteauthorizedToken)
 		fmt.Fprintf(w, "Default notebook: %s\r\n\r\n", notebook.GetName())
 
-		notebooks, _ := ns.ListNotebooks(evernoteauthorizedToken)
+		notebooks, _ := ns.ListNotebooks(req.Context(), evernoteauthorizedToken)
 		for idx, notebook := range notebooks {
 			fmt.Fprintf(w, "Notebook[%d]: %s\r\n", idx, notebook.GetName())
 		}
